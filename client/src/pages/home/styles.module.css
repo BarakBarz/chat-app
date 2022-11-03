@@ -21,6 +21,7 @@
 
 .input {
   width: 100%;
+  margin: 0;
   padding: 12px;
   border-radius: 6px;
   border: 1px solid rgb(160, 164, 255);
@@ -29,10 +30,4 @@
 
 .input option {
   margin-top: 20px;
-}
-
-input {
-  width: 80%;
-  margin: 0;
-  display: block;
 }
