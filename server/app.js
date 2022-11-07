@@ -1,10 +1,16 @@
 const express = require('express');
+
 const app = express();
 const http = require('http');
+
 const cors = require('cors');
 const { Server } = require('socket.io');
-const { PORT } = require('./utils/constants');
-const CHAT_BOT = 'ChatBot';
+const harperSaveMessage = require('./services/harper-save-message')
+
+const { PORT, HARPERDB_URL,
+  HARPERDB_PW, CHAT_BOT } = require('./utils/constants');
+
+
 let chatRoom = '';
 let allUsers = [];
 
@@ -25,7 +31,6 @@ io.on('connection', (socket) => {
 
   // Add a user to a room
   socket.on('join_room', (data) => {
-    console.log(data);
     const { username, room } = data;
     socket.join(room);
 
@@ -52,6 +57,16 @@ io.on('connection', (socket) => {
     socket.to(room).emit('chatroom_users', chatRoomUsers);
     socket.emit('chatroom_users', chatRoomUsers);
   });
+
+  // recieve message from user, send to all users in chat room and save to HarperDB 
+
+  socket.on('send_message', (data) => {
+    const { message, username, room, __createdtime__ } = data;
+    io.in(room).emit('receive_message', data)
+    harperSaveMessage(message, username, room, __createdtime__)
+      .then(response => console.log(response))
+      .catch((err) => console.log(err))
+  })
 });
 
 server.listen(PORT, () => console.log('Server is running on port 4000'));
