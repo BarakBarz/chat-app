@@ -1,8 +1,9 @@
 import './App.css';
 import { useState } from 'react';
+import Home from './pages/Home/Home';
+import Chat from './pages/Chat/Chat';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import io from 'socket.io-client';
-import Home from './pages/home/Home';
 
 const socket = io.connect('http://localhost:4000');
 
@@ -25,6 +26,10 @@ function App() {
                 socket={socket}
               />
             }
+          />
+          <Route
+            path='/chat'
+            element={<Chat socket={socket} room={room} username={username} />}
           />
         </Routes>
       </div>

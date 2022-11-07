@@ -7,10 +7,12 @@ const Home = ({ username, setUsername, room, setRoom, socket }) => {
 
   const joinRoom = () => {
     if (room !== '' && username !== '') {
+      console.log(socket);
+      debugger;
       socket.emit('join_room', { username, room });
-    }
 
-    navigate('/chat', { replace: true });
+      navigate('/chat', { replace: true });
+    }
   };
 
   return (
@@ -22,7 +24,6 @@ const Home = ({ username, setUsername, room, setRoom, socket }) => {
           className={styles.input}
           onChange={(e) => setUsername(e.target.value)}
         />
-        {/* TODO: fix input bigger than select!??*/}
         <select
           className={styles.input}
           onChange={(e) => setRoom(e.target.value)}>
