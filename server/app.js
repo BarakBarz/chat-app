@@ -5,11 +5,16 @@ const http = require('http');
 
 const cors = require('cors');
 const { Server } = require('socket.io');
-const harperSaveMessage = require('./services/harper-save-message')
+const harperSaveMessage = require('./services/harper-save-message');
+// const harperGetMessages = require('./services/harper-get-messages');
 
-const { PORT, HARPERDB_URL,
-  HARPERDB_PW, CHAT_BOT } = require('./utils/constants');
-
+const {
+  PORT,
+  HARPERDB_URL,
+  HARPERDB_PW,
+  CHAT_BOT,
+} = require('./utils/constants');
+const harperGetMessage = require('./services/harper-get-messages');
 
 let chatRoom = '';
 let allUsers = [];
@@ -58,15 +63,21 @@ io.on('connection', (socket) => {
     socket.emit('chatroom_users', chatRoomUsers);
   });
 
-  // recieve message from user, send to all users in chat room and save to HarperDB 
-
+  // Recieve message from user on client, send to all users in chat room and save to HarperDB
   socket.on('send_message', (data) => {
     const { message, username, room, __createdtime__ } = data;
-    io.in(room).emit('receive_message', data)
+    io.in(room).emit('receive_message', data);
     harperSaveMessage(message, username, room, __createdtime__)
-      .then(response => console.log(response))
-      .catch((err) => console.log(err))
-  })
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err));
+  });
+
+  harperGetMessage(room).then((lastHundredMessages) => {
+    console.log('latest messages', lastHundredMessages);
+    socket.emit('last_hundred_messages', lastHundredMessages).catch((err) => {
+      console.log(err);
+    });
+  });
 });
 
-server.listen(PORT, () => console.log('Server is running on port 4000'));
+server.listen(PORT, () => console.log('Server is running on port: ' + PORT));

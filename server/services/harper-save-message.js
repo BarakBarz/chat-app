@@ -1,8 +1,8 @@
-let axios = require('axios')
+let axios = require('axios');
 
 function harperSaveMessage(message, username, room) {
-  const dataBaseURL = process.env.HARPERDB_URL
-  const dataBasePW = process.env.HARPERDB_PW
+  const dataBaseURL = process.env.HARPERDB_URL;
+  const dataBasePW = process.env.HARPERDB_PW;
 
   if (!dataBaseURL || !dataBasePW) return null;
 
@@ -14,9 +14,9 @@ function harperSaveMessage(message, username, room) {
       {
         message,
         username,
-        room
-      }
-    ]
+        room,
+      },
+    ],
   });
 
   let config = {
@@ -24,21 +24,20 @@ function harperSaveMessage(message, username, room) {
     url: dataBaseURL,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: dataBasePW
+      Authorization: dataBasePW,
     },
-    data: data
-  }
+    data: data,
+  };
 
   return new Promise((resolve, reject) => {
     axios(config)
       .then(() => {
-        resolve(JSON.stringify(response.data))
+        resolve(JSON.stringify(response.data));
       })
       .catch((error) => {
-        reject(error)
+        reject(error);
       });
-  })
+  });
 }
-
 
 module.exports = harperSaveMessage;
