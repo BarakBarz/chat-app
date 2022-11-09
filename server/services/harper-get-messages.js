@@ -1,4 +1,4 @@
-const { default: axios } = require('axios');
+const axios = require('axios');
 
 function harperGetMessage(room) {
   const dataBaseURL = process.env.HARPERDB_URL;
@@ -27,7 +27,8 @@ function harperGetMessage(room) {
         resolve(JSON.stringify(response.data));
       })
       .catch((error) => {
-        reject(error);
+        console.log('occured on promise harperGetMessage:', error);
+        // reject(error);
       });
   });
 }

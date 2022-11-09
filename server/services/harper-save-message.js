@@ -31,10 +31,11 @@ function harperSaveMessage(message, username, room) {
 
   return new Promise((resolve, reject) => {
     axios(config)
-      .then(() => {
+      .then((response) => {
         resolve(JSON.stringify(response.data));
       })
       .catch((error) => {
+        console.log('occured on promise harperSaveMessage:', error);
         reject(error);
       });
   });

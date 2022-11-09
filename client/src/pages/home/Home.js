@@ -7,10 +7,8 @@ const Home = ({ username, setUsername, room, setRoom, socket }) => {
 
   const joinRoom = () => {
     if (room !== '' && username !== '') {
-      console.log(socket);
       debugger;
       socket.emit('join_room', { username, room });
-
       navigate('/chat', { replace: true });
     }
   };
@@ -18,15 +16,18 @@ const Home = ({ username, setUsername, room, setRoom, socket }) => {
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>
-        <h1>{`<>DevRooms</>`}</h1>
+        <h1>{`Chat-App`}</h1>
         <input
           placeholder='Username...'
+          type='text'
           className={styles.input}
           onChange={(e) => setUsername(e.target.value)}
+          required
         />
         <select
           className={styles.input}
-          onChange={(e) => setRoom(e.target.value)}>
+          onChange={(e) => setRoom(e.target.value)}
+        >
           <option>--Select Room--</option>
           <option value='javascript'>Javascript</option>
           <option value='node'>Node</option>
@@ -37,7 +38,8 @@ const Home = ({ username, setUsername, room, setRoom, socket }) => {
         <button
           className='btn btn-secondary'
           style={{ width: '100%' }}
-          onClick={joinRoom}>
+          onClick={joinRoom}
+        >
           Join Room
         </button>
       </div>

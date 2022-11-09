@@ -1,10 +1,10 @@
-import styles from './styles.module.css';
-import { useState, useEffect } from 'react';
-
-import React from 'react';
+import styles from './Chat.module.css';
+import { useRef, useState, useEffect } from 'react';
 
 const Messages = ({ socket }) => {
   const [messagesReceived, setMessagesReceived] = useState([]);
+
+  const messagesColumnRef = useRef(null);
 
   // Socket received? -> render the data on page
   useEffect(() => {
@@ -16,14 +16,37 @@ const Messages = ({ socket }) => {
           username: data.username,
           __createdtime__: data.__createdtime__,
         },
-      ])
+      ]),
     );
-
-    console.log(messagesReceived);
 
     // Remove evt listner on component unmount
     return () => socket.off('receive_message');
   }, [socket, messagesReceived]);
+
+  useEffect(() => {
+    // Last hundred messages that saved on DB in relation to relevant room (fetched in backend)
+    socket.on('last_hundred_messages', (lastHundredMessages) => {
+      console.log('Last 100 messages', JSON.parse(lastHundredMessages));
+      lastHundredMessages = JSON.parse(lastHundredMessages);
+      // Sort messages by __createdtime__
+      lastHundredMessages = sortMessagesByDate(lastHundredMessages);
+      setMessagesReceived((state) => [...lastHundredMessages, ...state]);
+    });
+
+    return () => socket.off('last_hundred_messages');
+  }, [socket]);
+
+  //scroll to most recent message
+  useEffect(() => {
+    messagesColumnRef.current.scrollTop =
+      messagesColumnRef.current.scrollHeight;
+  }, [messagesReceived]);
+
+  function sortMessagesByDate(messages) {
+    return messages.sort(
+      (a, b) => parseInt(a.__createdtime__) - parseInt(b.__createdtime__),
+    );
+  }
 
   function formatDate(timestamp) {
     const date = new Date(timestamp);
@@ -31,7 +54,7 @@ const Messages = ({ socket }) => {
   }
 
   return (
-    <div className={styles.messagesColumn}>
+    <div className={styles.messagesColumn} ref={messagesColumnRef}>
       {messagesReceived.map((msg, i) => (
         <div className={styles.message} key={i}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
