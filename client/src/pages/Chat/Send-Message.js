@@ -15,6 +15,12 @@ const SendMessage = ({ socket, username, room }) => {
     }
   };
 
+  const handleEnterKeyUp = (e) => {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  };
+
   return (
     <div className={styles.sendMessageContainer}>
       <input
@@ -23,6 +29,7 @@ const SendMessage = ({ socket, username, room }) => {
         placeholder={'Enter message'}
         onChange={(e) => setMessage(e.target.value)}
         value={message}
+        onKeyUp={(e) => handleEnterKeyUp(e)}
       />
       <button type='submit' className='btn btn-primary' onClick={sendMessage}>
         Send Message
