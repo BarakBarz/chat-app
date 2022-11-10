@@ -28,7 +28,7 @@ function harperGetMessage(room) {
       })
       .catch((error) => {
         console.log('occured on promise harperGetMessage:', error);
-        // reject(error);
+        reject(error);
       });
   });
 }

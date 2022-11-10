@@ -31,8 +31,7 @@ const io = new Server(server, {
 let chatRoom = '';
 let allUsers = [];
 
-app.use(express.static(path.join(__dirname, '../frontend/build')));
-
+app.use(express.static(path.join(__dirname, 'client', 'build')));
 // Listen for client connecting via socket.io-client
 io.on('connection', (socket) => {
   console.log(`User connected ${socket.id}`);
@@ -112,9 +111,8 @@ io.on('connection', (socket) => {
   });
 });
 
-// AFTER defining routes: Anything that doesn't match what's above, send back index.html; (the beginning slash ('/') in the string is important!)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/../frontend/build/index.html'));
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
 server.listen(PORT, () => console.log('Server is running on port: ' + PORT));
