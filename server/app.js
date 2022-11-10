@@ -2,6 +2,7 @@ const express = require('express');
 
 const app = express();
 const http = require('http');
+const path = require('path');
 
 const cors = require('cors');
 const { Server } = require('socket.io');
@@ -29,6 +30,8 @@ const io = new Server(server, {
 
 let chatRoom = '';
 let allUsers = [];
+
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 // Listen for client connecting via socket.io-client
 io.on('connection', (socket) => {
@@ -107,6 +110,11 @@ io.on('connection', (socket) => {
       });
     }
   });
+});
+
+// AFTER defining routes: Anything that doesn't match what's above, send back index.html; (the beginning slash ('/') in the string is important!)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname + '/../frontend/build/index.html'));
 });
 
 server.listen(PORT, () => console.log('Server is running on port: ' + PORT));
