@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "frontend": "cd frontend && npm start",
-    "api": "cd api && nodemon app.js",
+    "frontend": "cd client && npm start",
+    "api": "cd server && nodemon app.js",
     "heroku-postbuild": "cd frontend && npm install && npm run build"
   },
   "keywords": [],
