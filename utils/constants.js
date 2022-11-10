@@ -1,8 +1,8 @@
 require('dotenv').config();
 
 const {
-  HARPERDB_URL,
-  HARPERDB_PW,
+  HARPERDB_URL = process.env.HARPERDB_URL,
+  HARPERDB_PW = process.env.HARPERDB_URL,
   PORT = process.env.PORT || 4000,
 } = process.env;
 
