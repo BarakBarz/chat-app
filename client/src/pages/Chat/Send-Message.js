@@ -31,7 +31,11 @@ const SendMessage = ({ socket, username, room }) => {
         value={message}
         onKeyUp={(e) => handleEnterKeyUp(e)}
       />
-      <button type='submit' className='btn btn-primary' onClick={sendMessage}>
+      <button
+        type='submit'
+        className='btn btn-primary btn-small'
+        onClick={sendMessage}
+      >
         Send Message
       </button>
     </div>

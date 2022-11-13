@@ -39,7 +39,11 @@
 }
 
 .usersList li {
-  margin-bottom: 12px;
+  margin: 12px 0 12px 5px;
+  width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .messagesColumn {
@@ -47,6 +51,7 @@
   overflow: auto;
   padding: 10px 10px 10px 40px;
 }
+
 .message {
   background: rgb(0, 24, 111);
   border-radius: 6px;
@@ -62,10 +67,10 @@
   color: #fff;
 }
 
-/* Message input and button */
 .sendMessageContainer {
   padding: 16px 20px 20px 16px;
 }
+
 .messageInput {
   padding: 14px;
   margin-right: 16px;
@@ -73,4 +78,36 @@
   border-radius: 6px;
   border: 1px solid rgb(153, 217, 234);
   font-size: 0.9rem;
+}
+
+@media screen and (max-width: 720px) {
+  .chatContainer {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 10px;
+  }
+
+  .messagesColumn {
+    padding: 10px;
+  }
+
+  .roomTitle {
+    margin: 30px 10px 20px 0;
+    text-transform: uppercase;
+    font-size: 1rem;
+  }
+
+  .usersTitle {
+    margin: 20px 0 10px;
+  }
+
+  .sendMessageContainer {
+    padding: 8px 10px 10px 8px;
+  }
+
+  .messageInput {
+    width: 100%;
+    height: 34px;
+    margin-bottom: 3px;
+  }
 }
