@@ -2,12 +2,18 @@
 
 html * {
   font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+  width: 100%;
 }
 
 body {
   margin: 0 10px;
   padding: 0;
-  overflow: hidden;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: fixed;
+  -webkit-overflow-scrolling: touch;
   background: rgb(160, 164, 255);
 }
 
