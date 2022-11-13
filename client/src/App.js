@@ -5,7 +5,12 @@ import Chat from './pages/Chat/Chat';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import io from 'socket.io-client';
 
-const socket = io.connect('https://bb-chat-app.herokuapp.com/');
+const productionSocket = 'https://bb-chat-app.herokuapp.com/';
+const developmentSocket = 'http://localhost:3000';
+
+const production = process.env.PRODUCTION;
+
+const socket = io.connect(production ? productionSocket : developmentSocket);
 
 function App() {
   const [username, setUsername] = useState('');
