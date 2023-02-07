@@ -72,6 +72,13 @@ io.on('connection', (socket) => {
     socket.emit('chatroom_users', chatRoomUsers); // send to user all other users in room
   });
 
+  // Add event to listener for user typing
+  socket.on('typing', (data) => {
+    const { username, room } = data;
+    // Notify all other users in room that user is typing
+    socket.to(room).emit('user_typing', { username });
+  });
+
   // Receive message from user on client, send to all users in chat room and save to HarperDB
   socket.on('send_message', (data) => {
     const { message, username, room, __createdtime__ } = data;

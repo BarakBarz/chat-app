@@ -5,8 +5,15 @@ import SendMessage from './Send-Message';
 import { useEffect } from 'react';
 
 const Chat = ({ socket, username, room }) => {
+  const [userTyping, setUserTyping] = useState('');
+
   useEffect(() => {
-    return () => {};
+    socket.on('user_typing', ({ username }) => {
+      setUserTyping(username);
+    });
+    return () => {
+      socket.off('user_typing');
+    };
   }, []);
 
   return (
@@ -19,6 +26,9 @@ const Chat = ({ socket, username, room }) => {
           username={username}
           room={room}
         ></SendMessage>
+        {userTyping && (
+          <div className={styles.typing}>{userTyping} is typing...</div>
+        )}
       </div>
     </div>
   );
