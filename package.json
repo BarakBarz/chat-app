@@ -5,10 +5,7 @@
   "main": "index.js",
   "homepage": "/client",
   "scripts": {
-    "start": "node app.js",
-    "frontend": "cd client && npm start",
-    "api": "nodemon app.js",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
