@@ -15,6 +15,11 @@ const SendMessage = ({ socket, username, room }) => {
     }
   };
 
+  const handleChange = (event) => {
+    setMessage(event.target.value);
+    socket.emit('typing', { username, room });
+  };
+
   const handleEnterKeyUp = (e) => {
     if (e.key === 'Enter') {
       sendMessage();
@@ -27,7 +32,7 @@ const SendMessage = ({ socket, username, room }) => {
         type='text'
         className={styles.messageInput}
         placeholder={'Enter message'}
-        onChange={(e) => setMessage(e.target.value)}
+        onChange={handleChange}
         value={message}
         onKeyUp={(e) => handleEnterKeyUp(e)}
       />
