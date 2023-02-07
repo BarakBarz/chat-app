@@ -72,16 +72,26 @@ io.on('connection', (socket) => {
     socket.emit('chatroom_users', chatRoomUsers); // send to user all other users in room
   });
 
-  // Add event to listener for user typing
+  // Event listener for user typing
+  let typingTimeout;
+
   socket.on('typing', (data) => {
+    clearTimeout(typingTimeout);
     const { username, room } = data;
-    // Notify all other users in room that user is typing
-    socket.to(room).emit('user_typing', { username });
+
+    socket.to(room).emit('typing', { username });
+    typingTimeout = setTimeout(() => {
+      socket.to(room).emit('stop_typing', { username });
+    }, 2700);
   });
 
   // Receive message from user on client, send to all users in chat room and save to HarperDB
   socket.on('send_message', (data) => {
     const { message, username, room, __createdtime__ } = data;
+
+    clearTimeout(typingTimeout);
+    socket.to(chatRoom).emit('stop_typing');
+
     io.in(room).emit('receive_message', data);
 
     harperSaveMessage(message, username, room, __createdtime__)
