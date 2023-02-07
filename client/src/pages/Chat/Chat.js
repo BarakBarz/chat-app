@@ -14,7 +14,7 @@ const Chat = ({ socket, username, room }) => {
     return () => {
       socket.off('user_typing');
     };
-  }, []);
+  }, [socket]);
 
   return (
     <div className={styles.chatContainer}>
