@@ -79,6 +79,7 @@ io.on('connection', (socket) => {
     clearTimeout(typingTimeout);
     const { username, room } = data;
 
+    // Emit user is typing and set timeout for idle time
     socket.to(room).emit('typing', { username });
     typingTimeout = setTimeout(() => {
       socket.to(room).emit('stop_typing', { username });
@@ -89,8 +90,9 @@ io.on('connection', (socket) => {
   socket.on('send_message', (data) => {
     const { message, username, room, __createdtime__ } = data;
 
+    // remove timeout for idle user typing, and emit that user has stopped typing
     clearTimeout(typingTimeout);
-    socket.to(chatRoom).emit('stop_typing');
+    socket.to(room).emit('stop_typing', { username });
 
     io.in(room).emit('receive_message', data);
 
