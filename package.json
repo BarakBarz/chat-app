@@ -5,7 +5,9 @@
   "main": "index.js",
   "homepage": "/client",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "frontend": "cd client && npm start",
+    "api": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
