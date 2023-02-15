@@ -9,7 +9,7 @@ const socket = io.connect();
 
 function App() {
   const [username, setUsername] = useState('');
-  const [room, setRoom] = useState('');
+  const [room, setRoom] = useState('javascript');
 
   return (
     <Router>

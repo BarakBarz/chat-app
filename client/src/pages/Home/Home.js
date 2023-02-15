@@ -14,7 +14,10 @@ const Home = ({ username, setUsername, room, setRoom, socket }) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.formContainer}>
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className={styles.formContainer}
+      >
         <h1>{`Chat-App`}</h1>
         <input
           placeholder='Username...'
@@ -27,7 +30,6 @@ const Home = ({ username, setUsername, room, setRoom, socket }) => {
           className={styles.input}
           onChange={(e) => setRoom(e.target.value)}
         >
-          <option>--Select Room--</option>
           <option value='javascript'>Javascript</option>
           <option value='node'>Node</option>
           <option value='express'>Express</option>
@@ -41,7 +43,7 @@ const Home = ({ username, setUsername, room, setRoom, socket }) => {
         >
           Join Room
         </button>
-      </div>
+      </form>
     </div>
   );
 };
