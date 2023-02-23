@@ -2,6 +2,8 @@ import styles from './Chat.module.css';
 import RoomAndUsers from './Room-And-Users';
 import MessagesReceived from './Messages';
 import SendMessage from './Send-Message';
+import { useNavigate } from 'react-router-dom';
+
 import { useReducer, useEffect } from 'react';
 
 // Reducer for handling users typing state
@@ -22,8 +24,17 @@ const typingReducer = (state, action) => {
 };
 
 const Chat = ({ socket, username, room }) => {
+  const navigate = useNavigate();
+
   // State and dispatch function for users typing
   const [usersTyping, dispatchTyping] = useReducer(typingReducer, []);
+
+  // navigate if not connected to socket.
+  useEffect(() => {
+    if (!socket.connected) {
+      navigate('/', { replace: true });
+    }
+  });
 
   useEffect(() => {
     // Add socket event listeners for typing and stop typing events
