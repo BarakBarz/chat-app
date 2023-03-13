@@ -1,6 +1,7 @@
+import styles from './styles.module.css';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './styles.module.css';
+import useAudioRecorder from '../hooks/useAudioRecorder';
 
 const Home = ({ username, setUsername, room, setRoom, socket }) => {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ const Home = ({ username, setUsername, room, setRoom, socket }) => {
   const joinRoom = () => {
     if (room !== '' && username !== '') {
       socket.emit('join_room', { username, room });
-      navigate('/chat', { replace: true });
+      navigate('chat', { replace: true });
     }
   };
 
