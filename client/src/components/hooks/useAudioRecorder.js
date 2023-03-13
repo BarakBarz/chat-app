@@ -1,58 +1,49 @@
 import { useState, useEffect } from 'react';
 
 function useAudioRecorder() {
-  // Set initial state for the audio recorder
   const [recording, setRecording] = useState(false);
   const [audioStream, setAudioStream] = useState(null);
-  const [audioChunks, setAudioChunks] = useState([]);
+  const [mediaRecorder, setMediaRecorder] = useState(null);
+  const [audioUrl, setAudioUrl] = useState(null);
 
-  // Request permission to access the user's microphone when the component mounts
   useEffect(() => {
+    // Request permission to access the user's microphone when the component
+    //mounts
     navigator.mediaDevices
       .getUserMedia({ audio: true })
       .then((stream) => {
         setAudioStream(stream);
+        setMediaRecorder(new MediaRecorder(stream));
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
 
-  // Start recording the audio stream
-  const startRecording = () => {
-    setRecording(true);
-    setAudioChunks([]);
-    audioStream && audioStream.getTracks().forEach((track) => track.start());
-  };
-
-  // Stop recording the audio stream
-  const stopRecording = () => {
-    setRecording(false);
-    audioStream && audioStream.getTracks().forEach((track) => track.stop());
-  };
-
-  // Use MediaRecorder API to record audio and store it in an array of audio chunks
   useEffect(() => {
-    if (recording && audioStream) {
-      const mediaRecorder = new MediaRecorder(audioStream);
-      mediaRecorder.start();
-
-      // Store each data chunk in the audioChunks state
+    if (mediaRecorder) {
+      // When data is available, store it in an array of audio chunks
       mediaRecorder.addEventListener('dataavailable', (event) => {
-        setAudioChunks((audioChunks) => [...audioChunks, event.data]);
-      });
-
-      // When recording stops, create a URL for the recorded audio data
-      mediaRecorder.addEventListener('stop', () => {
-        const audioBlob = new Blob(audioChunks);
-        const audioUrl = URL.createObjectURL(audioBlob);
-        console.log(audioUrl);
+        setAudioUrl(URL.createObjectURL(event.data));
       });
     }
-  }, [recording, audioStream, audioChunks]);
+  }, [mediaRecorder]);
 
-  // Return the startRecording, stopRecording, and recording variables as an array
-  return [startRecording, stopRecording, recording];
+  const startRecording = () => {
+    if (mediaRecorder) {
+      setRecording(true);
+      mediaRecorder.start();
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorder) {
+      setRecording(false);
+      mediaRecorder.stop();
+    }
+  };
+
+  return [startRecording, stopRecording, recording, audioUrl];
 }
 
 export default useAudioRecorder;

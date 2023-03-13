@@ -4,6 +4,7 @@ import Home from './components/Home/Home';
 import Chat from './components/Chat/Chat';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import io from 'socket.io-client';
+import AudioRecorder from './components/AudioRecorder/AudioRecorder';
 
 const socket = io.connect();
 
@@ -33,6 +34,7 @@ function App() {
               <Chat socket={socket} room={room} username={username}></Chat>
             }
           />
+          <Route path='recorder' element={<AudioRecorder />} />
         </Routes>
       </div>
     </Router>
